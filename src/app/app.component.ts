@@ -1,4 +1,4 @@
-import { Component, OnInit ,ElementRef} from '@angular/core';
+import { Component,AfterViewInit, OnInit ,ElementRef} from '@angular/core';
 import { WeatherServiceService } from './services/weather-service.service';
 import {Chart} from 'chart.js';
 
@@ -7,14 +7,60 @@ import {Chart} from 'chart.js';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements AfterViewInit {
+  
    constructor( public weath:WeatherServiceService, public elementRef: ElementRef){}
    temp_max:any;
    temp_min:any;
    lineChart= [];
-   
+   canvas: any;
+   chart=[];
+   ctx: any;
    weatherDates = [];
-   ngOnInit(){
+   ngOnInit() {
+     
+}
+     // getting data from api
+   
+  //   code snippet for line chart
+  //   let htmlRef = this.elementRef.nativeElement.querySelector(`#canvas`);
+  //  this.lineChart = new Chart(htmlRef, {
+  //     type: 'line',
+  //     data: {
+  //       labels: this.weatherDates,
+  //       datasets: [
+  //         { 
+  //           data: this.temp_max,
+  //           borderColor: "#3cba9f",
+  //           fill: false
+  //         },
+  //         { 
+  //           data: this.temp_min,
+  //           borderColor: "#ffcc00",
+  //           fill: false
+  //         },
+  //       ]
+  //     },
+  //     options: {
+  //       legend: {
+  //         display: false
+  //       },
+  //       scales: {
+  //         xAxes: [{
+  //           display: true
+  //         }],
+  //         yAxes: [{
+  //           display: true
+  //         }],
+  //       }
+  //     }
+  //   });
+  // another graph
+
+  
+
+   ngAfterViewInit(){
+
     this.weath.dailyForecast().subscribe( res =>{
       console.log(res);
 
@@ -27,40 +73,47 @@ export class AppComponent implements OnInit {
     let jsdate = new Date(res * 1000)
     this.weatherDates.push(jsdate.toLocaleTimeString('en', { year: 'numeric', month: 'short', day: 'numeric' }))
 })
-    })
-    let htmlRef = this.elementRef.nativeElement.querySelector(`#lineChart`);
-   this.lineChart = new Chart(htmlRef, {
-      type: 'line',
-      data: {
-        labels: this.weatherDates,
-        datasets: [
-          { 
-            data: this.temp_max,
-            borderColor: "#3cba9f",
-            fill: false
-          },
-          { 
-            data: this.temp_min,
-            borderColor: "#ffcc00",
-            fill: false
-          },
-        ]
-      },
-      options: {
-        legend: {
-          display: false
+
+      // this.canvas = document.getElementById('Chart');
+    // this.ctx = this.canvas.getContext('2d');
+   this.chart=  new Chart('canvas', {
+    type: 'line', 
+    data: {
+      labels: this.weatherDates,
+      datasets: [
+        { 
+          data: this.temp_max,
+          borderColor: "#3cba9f",
+          fill: false
         },
-        scales: {
-          xAxes: [{
-            display: true
-          }],
-          yAxes: [{
-            display: true
-          }],
-        }
+        { 
+          data: this.temp_min,
+          borderColor: "#ffcc00",
+          fill: false
+        },
+      ]
+    },
+    options: {
+      legend: {
+        display: false
+      },
+      scales: {
+        xAxes: [{
+          display: true
+        }],
+        yAxes: [{
+          display: true
+        }],
       }
-    });
+    }
+});
 
 
-   }
+    })
+
+
+   
+  
+     }
+   
 }

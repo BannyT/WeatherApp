@@ -1,8 +1,19 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<!-- <div *ngIf="canvas">
 
 
 
+<canvas style="height: 100px;" id="canvas" ></canvas>
 
+</div> -->
 
+<!-- works -->
+<!-- <div *ngIf="chart" class="chart-container" ng-show="graph.visible">
+    <canvas id='Chart' class="my-4" width="900" height="380"></canvas>
+  </div> -->
 
-<!-- <router-outlet></router-outlet> -->
+  <div *ngIf="chart">
+    <canvas id="canvas">{{ chart }}</canvas>
+  </div>
+
+<router-outlet></router-outlet>
